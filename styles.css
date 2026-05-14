@@ -1,0 +1,31 @@
+html { scroll-behavior: smooth; }
+
+.answer-reveal {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.6s ease-out, opacity 0.4s ease-out, padding 0.4s ease-out;
+    opacity: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+.answer-reveal.show {
+    max-height: 3000px;
+    opacity: 1;
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+}
+
+@keyframes highlight {
+    0% { background-color: #fef08a; }
+    100% { background-color: transparent; }
+}
+.highlight-target:target {
+    animation: highlight 2s ease-out;
+    border-left: 4px solid #3b82f6;
+    padding-left: 1rem;
+    border-radius: 0.25rem;
+}
+
+[id^="written-q"], [id^="concept-"] {
+    scroll-margin-top: 80px;
+}

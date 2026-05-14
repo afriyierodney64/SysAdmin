@@ -108,7 +108,8 @@
                 <div id="concept-mbr-gpt" class="highlight-target pt-2">
                     <h3 class="text-lg font-bold text-slate-800">MBR & GPT (Partitioning Schemes)</h3>
                     <p class="text-sm text-slate-500 mb-2"><strong>MBR</strong> = Master Boot Record |
-                        <strong>GPT</strong> = GUID Partition Table</p>
+                        <strong>GPT</strong> = GUID Partition Table
+                    </p>
                     <p class="text-slate-700"><strong>Professional Definition:</strong> Architectural frameworks that
                         dictate how a physical hard drive is divided into logical volumes (partitions) and where boot
                         information is stored.</p>
@@ -395,7 +396,8 @@
                             they aren't in the same mirror pair) and offers exceptional read <em>and</em> write speeds
                             because there is no parity calculation.</p>
                         <p><strong>Recommendation & Justification:</strong> For a high-transaction database server,
-                            <strong>RAID 10 is the superior choice.</strong></p>
+                            <strong>RAID 10 is the superior choice.</strong>
+                        </p>
                         <ul class="list-disc pl-5 space-y-1 mt-2">
                             <li>Databases are I/O intensive, requiring fast, continuous read/write operations.</li>
                             <li>RAID 5 suffers from a significant write penalty due to parity calculation overhead,
@@ -467,7 +469,8 @@
                                 heads</strong> at its tip. To read/write data, the spindle spins the platters at high
                             speeds (e.g., 7200 RPM). The actuator moves the head to the correct <em>track</em> and
                             <em>sector</em>. Data is written by altering the magnetic polarization on the platter's
-                            surface (representing 1s and 0s) and read by detecting these magnetic changes.</p>
+                            surface (representing 1s and 0s) and read by detecting these magnetic changes.
+                        </p>
                         <p><strong>Storage Models Differentiation:</strong></p>
                         <ul class="list-disc pl-5 space-y-2 mt-2">
                             <li><strong>DAS (Direct Attached Storage):</strong> Storage directly physically connected to
@@ -651,7 +654,8 @@
                                 mathematically impossible to brute-force with current technology.</li>
                             <li><strong>No Network Interception:</strong> Unlike passwords, the private key is
                                 <em>never</em> sent over the network. Even if an attacker intercepts the traffic, they
-                                cannot steal the credential.</li>
+                                cannot steal the credential.
+                            </li>
                             <li><strong>Phishing Resistance:</strong> You cannot be socially engineered into "giving
                                 away" your private key in the same way you can be tricked into typing a password into a
                                 fake portal.</li>
@@ -718,7 +722,8 @@
                             Virtual File System (VFS) as nodes in the directory tree.</p>
                         <p><strong>Practical Examples:</strong> Because they are treated as files, administrators can
                             use standard, simple text-processing tools (like <code>cat</code>, <code>echo</code>,
-                            <code>grep</code>) to interact with them, rather than needing specialized APIs.</p>
+                            <code>grep</code>) to interact with them, rather than needing specialized APIs.
+                        </p>
                         <ul class="list-disc pl-5 space-y-2 mt-2">
                             <li><strong>Hardware Monitoring via <code>/dev</code> or <code>/sys</code>:</strong> An
                                 administrator can read from hardware devices directly. For example, reading the contents
@@ -815,7 +820,8 @@
                                 <em>must</em> be automated using configuration management tools (like Ansible, Puppet,
                                 or Chef) or bash scripting. The automated tool can push the updates in parallel, reboot
                                 systems in a staggered fashion to maintain uptime, and generate a centralized report of
-                                successes and failures.</li>
+                                successes and failures.
+                            </li>
                         </ul>
                     </div>
                 </div>
