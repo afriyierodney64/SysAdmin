@@ -4,8 +4,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unix/Linux System Administration Practice Quiz</title>
+    <title>Unix/Linux System Administration Practice Quiz & Written Prep</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .answer-reveal {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, opacity 0.5s ease-out, padding 0.5s ease-out;
+            opacity: 0;
+        }
+
+        .answer-reveal.show {
+            max-height: 1000px;
+            /* Arbitrary large number to allow content to expand */
+            opacity: 1;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+
+        /* Highlight animation for anchor targets */
+        @keyframes highlight {
+            0% {
+                background-color: #fef08a;
+            }
+
+            /* yellow-200 */
+            100% {
+                background-color: transparent;
+            }
+        }
+
+        .highlight-target:target {
+            animation: highlight 2s ease-out;
+            border-left: 4px solid #3b82f6;
+            /* blue-500 */
+            padding-left: 1rem;
+            border-radius: 0.25rem;
+        }
+    </style>
 </head>
 
 <body class="min-h-screen bg-slate-50 text-slate-800 font-sans pb-24">
@@ -42,14 +82,747 @@
     </div>
 
     <!-- Main Content Container -->
-    <div class="max-w-3xl mx-auto p-4 md:p-8 mt-6">
+    <div class="max-w-4xl mx-auto p-4 md:p-8 mt-6">
         <header class="mb-10 text-center">
             <h2 class="text-3xl font-extrabold text-slate-900">Unix Fundamentals Practice</h2>
-            <p class="text-slate-500 mt-2">Interactive testing environment. Answers validate instantly.</p>
+            <p class="text-slate-500 mt-2">Interactive testing environment for MCQs and Written Exam Preparation.</p>
         </header>
 
-        <!-- Quiz Container where JS will inject questions -->
-        <div id="quiz-container" class="space-y-12"></div>
+        <!-- Glossary/Concept Appendix -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-10">
+            <h2
+                class="text-2xl font-bold text-slate-800 border-b-2 border-blue-500 inline-block pb-1 mb-6 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="text-blue-500">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M12 16v-4"></path>
+                    <path d="M12 8h.01"></path>
+                </svg>
+                Core Concepts Appendix
+            </h2>
+            <p class="text-slate-600 mb-6 italic">A layman's guide to the technical terms you need to master.</p>
+
+            <div class="space-y-6">
+                <!-- Concept: MBR & GPT -->
+                <div id="concept-mbr-gpt" class="highlight-target pt-2">
+                    <h3 class="text-lg font-bold text-slate-800">MBR & GPT (Partitioning Schemes)</h3>
+                    <p class="text-sm text-slate-500 mb-2"><strong>MBR</strong> = Master Boot Record |
+                        <strong>GPT</strong> = GUID Partition Table</p>
+                    <p class="text-slate-700"><strong>Professional Definition:</strong> Architectural frameworks that
+                        dictate how a physical hard drive is divided into logical volumes (partitions) and where boot
+                        information is stored.</p>
+                    <div class="bg-slate-50 p-3 rounded mt-2 border-l-4 border-slate-300">
+                        <p class="text-slate-600"><strong>The Analogy:</strong> Think of a raw hard drive as an empty
+                            plot of land. Before you can build houses (save files), you need a blueprint to divide the
+                            land into lots (partitions).<br>
+                            - <strong>MBR</strong> is the old, handwritten blueprint. It limits you to dividing the land
+                            into only 4 big lots, and if the single piece of paper gets destroyed, you lose the
+                            layout.<br>
+                            - <strong>GPT</strong> is a modern, digital blueprint. You can divide the land into 128
+                            lots, the lots can be infinitely larger, and it automatically makes backup copies of the
+                            blueprint in case the original is damaged.</p>
+                    </div>
+                </div>
+
+                <!-- Concept: RAID -->
+                <div id="concept-raid" class="highlight-target pt-2">
+                    <h3 class="text-lg font-bold text-slate-800">RAID Architecture</h3>
+                    <p class="text-sm text-slate-500 mb-2"><strong>RAID</strong> = Redundant Array of Independent Disks
+                    </p>
+                    <p class="text-slate-700"><strong>Professional Definition:</strong> A storage virtualization
+                        technology that combines multiple physical disk drive components into one or more logical units
+                        for the purposes of data redundancy, performance improvement, or both.</p>
+                    <div class="bg-slate-50 p-3 rounded mt-2 border-l-4 border-slate-300">
+                        <p class="text-slate-600"><strong>The Analogy:</strong> Imagine you have a highly important,
+                            long book to write. <br>
+                            - If you write it in one notebook (Single Drive) and lose it, it's gone.<br>
+                            - <strong>RAID 1 (Mirroring)</strong>: You write every page in two notebooks simultaneously.
+                            If one is lost, you have an exact copy. (High safety, but takes twice the paper).<br>
+                            - <strong>RAID 5 (Parity)</strong>: You have 3 friends helping you. Instead of full copies,
+                            you write part of a sentence in notebook A, the next part in B, and a "math puzzle clue" in
+                            C. If notebook A burns up, you can use B and C's clues to perfectly recreate A. (Good
+                            safety, saves paper, but doing the math puzzle slows you down).<br>
+                            - <strong>RAID 10 (Stripe of Mirrors)</strong>: You combine the speed of writing parts in
+                            different books with the safety of making exact copies of everything. (Fastest and safest,
+                            but requires the most notebooks).</p>
+                    </div>
+                </div>
+
+                <!-- Concept: Storage Models -->
+                <div id="concept-storage-models" class="highlight-target pt-2">
+                    <h3 class="text-lg font-bold text-slate-800">Storage Models (DAS, NAS, SAN)</h3>
+                    <p class="text-sm text-slate-500 mb-2"><strong>DAS</strong> = Direct Attached Storage |
+                        <strong>NAS</strong> = Network Attached Storage | <strong>SAN</strong> = Storage Area Network
+                    </p>
+                    <p class="text-slate-700"><strong>Professional Definition:</strong> Different network architectures
+                        defining how storage devices connect to servers and workstations, determining access speed,
+                        sharing capabilities, and data control level (file-level vs. block-level).</p>
+                    <div class="bg-slate-50 p-3 rounded mt-2 border-l-4 border-slate-300">
+                        <p class="text-slate-600"><strong>The Analogy:</strong> You need a place to store tools
+                            (data).<br>
+                            - <strong>DAS</strong> is a toolbox sitting directly on your desk. It's super fast to reach,
+                            but only you can use it. (Like an external USB drive).<br>
+                            - <strong>NAS</strong> is a shared toolshed in the neighborhood. Anyone on the street
+                            (network) can walk up and borrow a hammer (file). The shed manager handles where the tools
+                            are placed. (Great for sharing files in an office).<br>
+                            - <strong>SAN</strong> is a massive, high-speed underground delivery tube system connecting
+                            your house directly to a giant warehouse. Your computer treats the warehouse exactly like a
+                            toolbox on your desk, giving you total, raw control. (Used by massive enterprise servers).
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Concept: SA Principles & Laws -->
+                <div id="concept-sa-principles" class="highlight-target pt-2">
+                    <h3 class="text-lg font-bold text-slate-800">System Administration Principles & Laws</h3>
+                    <p class="text-slate-700"><strong>Professional Definition:</strong> Foundational philosophies that
+                        guide how IT infrastructure should be designed (Scalability, Security, Simplicity) and humorous
+                        but accurate "laws" reflecting human/system behavior.</p>
+                    <div class="bg-slate-50 p-3 rounded mt-2 border-l-4 border-slate-300">
+                        <p class="text-slate-600"><strong>The Breakdown:</strong><br>
+                            - <strong>Scalability:</strong> A system's ability to grow without breaking or requiring a
+                            massive increase in human effort (Requires Automation).<br>
+                            - <strong>Simplicity:</strong> Complex systems break easily. Keep designs as simple as
+                            possible to make them understandable and fixable.<br>
+                            - <strong>Parkinson's Law of Storage:</strong> "Data expands to fill the space available."
+                            No matter how big a hard drive you buy, users will eventually fill it up with cat pictures
+                            and old backups.<br>
+                            - <strong>Murphy's Law:</strong> "Anything that can go wrong, will go wrong." Always have a
+                            backup plan, because a server will crash at the worst possible time.</p>
+                    </div>
+                </div>
+
+                <!-- Concept: SSH -->
+                <div id="concept-ssh" class="highlight-target pt-2">
+                    <h3 class="text-lg font-bold text-slate-800">SSH & Public-Key Cryptography</h3>
+                    <p class="text-sm text-slate-500 mb-2"><strong>SSH</strong> = Secure Shell</p>
+                    <p class="text-slate-700"><strong>Professional Definition:</strong> A cryptographic network protocol
+                        for operating network services securely over an unsecured network, primarily used for remote
+                        command-line login.</p>
+                    <div class="bg-slate-50 p-3 rounded mt-2 border-l-4 border-slate-300">
+                        <p class="text-slate-600"><strong>The Analogy:</strong> You need to send secret commands to a
+                            robot in another building.<br>
+                            - <strong>Password Authentication:</strong> You shout a secret password across the street.
+                            If someone is listening, they steal it.<br>
+                            - <strong>Public-Key SSH:</strong> You give the robot an open padlock (Public Key). Anyone
+                            can see the padlock, but it's useless on its own. You keep the only key (Private Key) safe
+                            in your pocket. When you want to talk, the robot puts a message in a box and snaps your
+                            padlock shut. Only you can open the box to read the message. The secret is never sent across
+                            the street.</p>
+                    </div>
+                </div>
+
+                <!-- Concept: Everything is a File -->
+                <div id="concept-unix-philosophy" class="highlight-target pt-2">
+                    <h3 class="text-lg font-bold text-slate-800">Unix Philosophy: "Everything is a File"</h3>
+                    <p class="text-slate-700"><strong>Professional Definition:</strong> A defining characteristic of
+                        Unix-like operating systems where input/output to physical hardware devices, network sockets,
+                        and system processes is handled identically to regular text files via the Virtual File System.
+                    </p>
+                    <div class="bg-slate-50 p-3 rounded mt-2 border-l-4 border-slate-300">
+                        <p class="text-slate-600"><strong>The Analogy:</strong> Imagine a master control room for a
+                            factory. Normally, you need a different manual and tool to operate the lights, the conveyor
+                            belt, and the heater. <br>
+                            In Unix, the designers decided: "Let's put a sticky note on everything." <br>
+                            To turn on a light, you just write the word "ON" on its sticky note. To read the
+                            temperature, you just read the words on the heater's sticky note. Because the computer
+                            treats hardware (the heater) exactly like a text file (the sticky note), administrators can
+                            use simple text tools to control complex machinery.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="flex border-b border-slate-200 mb-8">
+            <button id="tab-mcq"
+                class="px-6 py-3 font-semibold text-blue-600 border-b-2 border-blue-600 hover:bg-slate-100 transition">Multiple
+                Choice (Section A)</button>
+            <button id="tab-written"
+                class="px-6 py-3 font-semibold text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition">Written
+                Questions (Section B)</button>
+        </div>
+
+        <!-- MCQ Section -->
+        <div id="section-mcq">
+            <!-- Quiz Container where JS will inject questions -->
+            <div id="quiz-container" class="space-y-12"></div>
+        </div>
+
+        <!-- Written Section -->
+        <div id="section-written" class="hidden space-y-12">
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8 rounded-r-lg">
+                <p class="text-blue-800 font-medium"><strong>Exam Structure:</strong> 5 Written Questions, Answer 3 (20
+                    marks each). Type your answer in the box, then check your understanding against the model answer.
+                </p>
+            </div>
+
+            <!-- Written Question 1 -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden relative">
+                <div class="absolute top-6 right-6">
+                    <a href="#concept-mbr-gpt"
+                        class="text-sm font-medium text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-3 py-1 rounded-full flex items-center gap-1 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                        Review MBR/GPT
+                    </a>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-slate-800 mb-2 border-b pb-2 pr-32">Question 1: MBR vs GPT (20
+                        Marks)</h3>
+                    <p class="text-slate-700 mb-4 leading-relaxed mt-4">Compare and contrast the Master Boot Record
+                        (MBR) and GUID Partition Table (GPT) partitioning schemes. In your answer, discuss three
+                        specific architectural advantages GPT provides to modern System Administrators over the legacy
+                        MBR framework.</p>
+
+                    <textarea
+                        class="w-full h-40 p-4 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition shadow-inner bg-slate-50"
+                        placeholder="Type your practice answer here..."></textarea>
+
+                    <div class="mt-4 flex justify-end">
+                        <button
+                            class="show-answer-btn px-6 py-2 bg-slate-800 text-white font-medium rounded hover:bg-slate-700 transition flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            Show Model Answer
+                        </button>
+                    </div>
+                </div>
+                <!-- Hidden Answer -->
+                <div class="answer-reveal bg-green-50 px-6 border-t border-green-200">
+                    <h4 class="font-bold text-green-900 mb-2 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="text-green-600">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        Tutor's Breakdown
+                    </h4>
+                    <div class="text-green-800 prose prose-green max-w-none text-sm md:text-base">
+                        <p><strong>Comparison:</strong> Both are partitioning schemes that organize how data is
+                            structured on a storage drive. However, MBR is the older, legacy standard (introduced in the
+                            1980s), while GPT is the modern standard associated with UEFI.</p>
+                        <p><strong>Three Architectural Advantages of GPT:</strong></p>
+                        <ol class="list-decimal pl-5 space-y-2 mt-2">
+                            <li><strong>Storage Limits:</strong> MBR limits disk size to 2TB and supports only 4 primary
+                                partitions (requiring extended/logical partitions for more). GPT supports drives
+                                virtually infinite in size (zettabytes) and up to 128 primary partitions by default.
+                            </li>
+                            <li><strong>Data Redundancy/Corruption:</strong> MBR stores partitioning and boot data in a
+                                single location at the start of the drive (making it a single point of failure). GPT
+                                stores multiple copies of this data across the disk (primary header at the start, backup
+                                header at the end), making it highly resilient to corruption.</li>
+                            <li><strong>Data Verification:</strong> GPT uses Cyclic Redundancy Checks (CRC32) to
+                                constantly verify the integrity of its headers and partition tables. If it detects
+                                corruption, it automatically attempts recovery from the backup. MBR has no way of
+                                knowing if its data is corrupted.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Written Question 2 -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden relative">
+                <div class="absolute top-6 right-6">
+                    <a href="#concept-raid"
+                        class="text-sm font-medium text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-3 py-1 rounded-full flex items-center gap-1 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                        Review RAID
+                    </a>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-slate-800 mb-2 border-b pb-2 pr-32">Question 2: RAID Architecture
+                        (20 Marks)</h3>
+                    <p class="text-slate-700 mb-4 leading-relaxed mt-4">A medium-sized enterprise requires a storage
+                        solution that effectively balances fault tolerance and read/write performance. Explain the
+                        operational architecture of RAID 5 and RAID 10. Recommend which of these two configurations
+                        would be better suited for a high-transaction database server, providing technical
+                        justifications for your choice.</p>
+
+                    <textarea
+                        class="w-full h-40 p-4 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition shadow-inner bg-slate-50"
+                        placeholder="Type your practice answer here..."></textarea>
+
+                    <div class="mt-4 flex justify-end">
+                        <button
+                            class="show-answer-btn px-6 py-2 bg-slate-800 text-white font-medium rounded hover:bg-slate-700 transition flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            Show Model Answer
+                        </button>
+                    </div>
+                </div>
+                <!-- Hidden Answer -->
+                <div class="answer-reveal bg-green-50 px-6 border-t border-green-200">
+                    <h4 class="font-bold text-green-900 mb-2 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="text-green-600">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        Tutor's Breakdown
+                    </h4>
+                    <div class="text-green-800 prose prose-green max-w-none text-sm md:text-base">
+                        <p><strong>RAID 5 Architecture:</strong> Uses block-level striping with distributed parity. Data
+                            is split across all drives (minimum 3), and parity (reconstruction data) is written across
+                            all drives. If one drive fails, the array calculates the missing data using the parity
+                            blocks. It offers good read speeds and high storage efficiency but suffers from the "write
+                            penalty" (because parity must be calculated for every write operation).</p>
+                        <p><strong>RAID 10 Architecture:</strong> A nested RAID combining RAID 1 (Mirroring) and RAID 0
+                            (Striping). Data is mirrored to a secondary set of drives, and then striped across those
+                            sets. It requires a minimum of 4 drives. It can survive multiple drive failures (as long as
+                            they aren't in the same mirror pair) and offers exceptional read <em>and</em> write speeds
+                            because there is no parity calculation.</p>
+                        <p><strong>Recommendation & Justification:</strong> For a high-transaction database server,
+                            <strong>RAID 10 is the superior choice.</strong></p>
+                        <ul class="list-disc pl-5 space-y-1 mt-2">
+                            <li>Databases are I/O intensive, requiring fast, continuous read/write operations.</li>
+                            <li>RAID 5 suffers from a significant write penalty due to parity calculation overhead,
+                                which creates a bottleneck in high-transaction database environments.</li>
+                            <li>RAID 10 offers the fastest write performance while still maintaining complete fault
+                                tolerance via mirroring.</li>
+                            <li>Rebuilding a failed drive in RAID 10 is much faster and less strenuous on the system
+                                than rebuilding a RAID 5 array (which requires reading all remaining disks to compute
+                                parity).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Written Question 3 -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden relative">
+                <div class="absolute top-6 right-6">
+                    <a href="#concept-storage-models"
+                        class="text-sm font-medium text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-3 py-1 rounded-full flex items-center gap-1 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                        Review Storage Models
+                    </a>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-slate-800 mb-2 border-b pb-2 pr-32">Question 3: Storage Models &
+                        HDD Mechanics (20 Marks)</h3>
+                    <p class="text-slate-700 mb-4 leading-relaxed mt-4">Describe the internal physical components of a
+                        Hard Disk Drive (HDD) and explain the process by which data is read from and written to the
+                        platters. Furthermore, differentiate between the Direct Attached Storage (DAS), Network Attached
+                        Storage (NAS), and Storage Area Network (SAN) models, citing an ideal use-case for each.</p>
+
+                    <textarea
+                        class="w-full h-40 p-4 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition shadow-inner bg-slate-50"
+                        placeholder="Type your practice answer here..."></textarea>
+
+                    <div class="mt-4 flex justify-end">
+                        <button
+                            class="show-answer-btn px-6 py-2 bg-slate-800 text-white font-medium rounded hover:bg-slate-700 transition flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            Show Model Answer
+                        </button>
+                    </div>
+                </div>
+                <!-- Hidden Answer -->
+                <div class="answer-reveal bg-green-50 px-6 border-t border-green-200">
+                    <h4 class="font-bold text-green-900 mb-2 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="text-green-600">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        Tutor's Breakdown
+                    </h4>
+                    <div class="text-green-800 prose prose-green max-w-none text-sm md:text-base">
+                        <p><strong>HDD Mechanics:</strong> An HDD consists of circular, magnetic
+                            <strong>platters</strong> connected to a rotating <strong>spindle</strong>. An
+                            <strong>actuator arm</strong> moves across the platters, holding <strong>read/write
+                                heads</strong> at its tip. To read/write data, the spindle spins the platters at high
+                            speeds (e.g., 7200 RPM). The actuator moves the head to the correct <em>track</em> and
+                            <em>sector</em>. Data is written by altering the magnetic polarization on the platter's
+                            surface (representing 1s and 0s) and read by detecting these magnetic changes.</p>
+                        <p><strong>Storage Models Differentiation:</strong></p>
+                        <ul class="list-disc pl-5 space-y-2 mt-2">
+                            <li><strong>DAS (Direct Attached Storage):</strong> Storage directly physically connected to
+                                a single server/workstation (e.g., internal hard drive, external USB drive). It is not
+                                networked.
+                                <br><em>Use Case:</em> A local workstation needing high-speed, isolated storage for
+                                video editing.
+                            </li>
+                            <li><strong>NAS (Network Attached Storage):</strong> A dedicated, file-level storage
+                                appliance connected to a standard Ethernet network. It acts as a file server, allowing
+                                multiple clients to access shared files over TCP/IP.
+                                <br><em>Use Case:</em> A small office needing a centralized, easily accessible location
+                                for employees to share Word documents and spreadsheets.
+                            </li>
+                            <li><strong>SAN (Storage Area Network):</strong> A high-performance, dedicated network
+                                (often using Fibre Channel or iSCSI) that provides block-level access to storage arrays.
+                                Servers see SAN storage as if it were a locally attached hard drive, rather than a
+                                network share.
+                                <br><em>Use Case:</em> An enterprise data center hosting massive, clustered databases or
+                                virtual machines that require maximum throughput, low latency, and block-level control.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Written Question 4 -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden relative">
+                <div class="absolute top-6 right-6">
+                    <a href="#concept-sa-principles"
+                        class="text-sm font-medium text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-3 py-1 rounded-full flex items-center gap-1 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                        Review SA Laws
+                    </a>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-slate-800 mb-2 border-b pb-2 pr-32">Question 4: SA Favourite Laws
+                        & System Documentation (20 Marks)</h3>
+                    <p class="text-slate-700 mb-4 leading-relaxed mt-4">System administration is guided by fundamental
+                        principles and rigorous record-keeping.<br>
+                        a) Identify and explain two well-known "System Administrator Favourite Laws" (e.g., Parkinson's
+                        Law as applied to storage). (10 marks)<br>
+                        b) Discuss why establishing and maintaining comprehensive system documentation is critical for
+                        disaster recovery and operational continuity. (10 marks)</p>
+
+                    <textarea
+                        class="w-full h-40 p-4 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition shadow-inner bg-slate-50"
+                        placeholder="Type your practice answer here..."></textarea>
+
+                    <div class="mt-4 flex justify-end">
+                        <button
+                            class="show-answer-btn px-6 py-2 bg-slate-800 text-white font-medium rounded hover:bg-slate-700 transition flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            Show Model Answer
+                        </button>
+                    </div>
+                </div>
+                <!-- Hidden Answer -->
+                <div class="answer-reveal bg-green-50 px-6 border-t border-green-200">
+                    <h4 class="font-bold text-green-900 mb-2 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="text-green-600">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        Tutor's Breakdown
+                    </h4>
+                    <div class="text-green-800 prose prose-green max-w-none text-sm md:text-base">
+                        <p><strong>Part A: SA Laws</strong></p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li><strong>Parkinson's Law (as applied to storage):</strong> "Data expands to fill any
+                                void." This means that no matter how much storage capacity a System Administrator
+                                provisions, users and applications will eventually fill it. It highlights the futility
+                                of just buying more disks without implementing data management policies and quotas.</li>
+                            <li><strong>Murphy's Law:</strong> "Anything that can go wrong will go wrong." In system
+                                administration, this dictates a defensive posture. SAs must assume hardware will fail,
+                                software will crash, and human error will occur, necessitating robust backups,
+                                redundancy (like RAID), and failover systems.</li>
+                            <li><em>(Alternative) Conway's Law:</em> "Organizations which design systems are constrained
+                                to produce designs which are copies of the communication structures of these
+                                organizations." Poor team communication leads to poorly integrated IT systems.</li>
+                        </ul>
+                        <p class="mt-4"><strong>Part B: Documentation</strong></p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li><strong>Disaster Recovery (DR):</strong> During an outage, stress and panic are high.
+                                Relying on memory is dangerous. Comprehensive documentation provides a clear,
+                                step-by-step "runbook" for restoring services, rebuilding servers, and recovering data,
+                                drastically reducing downtime (MTTR).</li>
+                            <li><strong>Operational Continuity (Bus Factor):</strong> If a key System Administrator is
+                                unavailable (vacation, illness, leaving the company), undocumented systems become a
+                                major liability. Documentation ensures that knowledge is institutionalized rather than
+                                siloed in one person's head, allowing other team members to step in and manage the
+                                infrastructure without disruption.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Written Question 5 -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden relative">
+                <div class="absolute top-6 right-6">
+                    <a href="#concept-ssh"
+                        class="text-sm font-medium text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-3 py-1 rounded-full flex items-center gap-1 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                        Review SSH
+                    </a>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-slate-800 mb-2 border-b pb-2 pr-32">Question 5: SSH and Remote
+                        Management (20 Marks)</h3>
+                    <p class="text-slate-700 mb-4 leading-relaxed mt-4">Secure Shell (SSH) is a fundamental protocol for
+                        remote system management. Detail the step-by-step process of establishing a secure SSH
+                        connection utilizing public-key cryptography. In your response, explain how this method
+                        mitigates common security threats compared to traditional password-based authentication.</p>
+
+                    <textarea
+                        class="w-full h-40 p-4 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition shadow-inner bg-slate-50"
+                        placeholder="Type your practice answer here..."></textarea>
+
+                    <div class="mt-4 flex justify-end">
+                        <button
+                            class="show-answer-btn px-6 py-2 bg-slate-800 text-white font-medium rounded hover:bg-slate-700 transition flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            Show Model Answer
+                        </button>
+                    </div>
+                </div>
+                <!-- Hidden Answer -->
+                <div class="answer-reveal bg-green-50 px-6 border-t border-green-200">
+                    <h4 class="font-bold text-green-900 mb-2 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="text-green-600">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        Tutor's Breakdown
+                    </h4>
+                    <div class="text-green-800 prose prose-green max-w-none text-sm md:text-base">
+                        <p><strong>Step-by-Step Process of Public-Key SSH:</strong></p>
+                        <ol class="list-decimal pl-5 space-y-2 mt-2">
+                            <li><strong>Key Generation:</strong> The client uses a tool (like <code>ssh-keygen</code>)
+                                to generate a cryptographic key pair: a private key (kept secret on the client) and a
+                                public key (safe to share).</li>
+                            <li><strong>Key Distribution:</strong> The client's public key is copied to the remote
+                                server and appended to the user's <code>~/.ssh/authorized_keys</code> file.</li>
+                            <li><strong>Connection Initiation:</strong> The client initiates an SSH connection. The
+                                server verifies if the client's public key exists in its authorized list.</li>
+                            <li><strong>Challenge-Response:</strong> If found, the server encrypts a random challenge
+                                message using the client's <em>public key</em> and sends it to the client.</li>
+                            <li><strong>Decryption & Verification:</strong> The client uses its secret <em>private
+                                    key</em> to decrypt the message, hashes it, and sends the hash back to the server.
+                                Because only the private key could decrypt the challenge, the server verifies the
+                                client's identity without any passwords being transmitted.</li>
+                        </ol>
+                        <p class="mt-4"><strong>Security Advantages over Passwords:</strong></p>
+                        <ul class="list-disc pl-5 space-y-2 mt-2">
+                            <li><strong>Brute Force Mitigation:</strong> Passwords can be guessed or cracked via
+                                dictionary attacks. Cryptographic keys (e.g., RSA 2048-bit or Ed25519) are
+                                mathematically impossible to brute-force with current technology.</li>
+                            <li><strong>No Network Interception:</strong> Unlike passwords, the private key is
+                                <em>never</em> sent over the network. Even if an attacker intercepts the traffic, they
+                                cannot steal the credential.</li>
+                            <li><strong>Phishing Resistance:</strong> You cannot be socially engineered into "giving
+                                away" your private key in the same way you can be tricked into typing a password into a
+                                fake portal.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Written Question 6 -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden relative">
+                <div class="absolute top-6 right-6">
+                    <a href="#concept-unix-philosophy"
+                        class="text-sm font-medium text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-3 py-1 rounded-full flex items-center gap-1 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                        Review Unix Philosophy
+                    </a>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-slate-800 mb-2 border-b pb-2 pr-32">Question 6: File Systems (Unix
+                        Philosophy & Principles) (20 Marks)</h3>
+                    <p class="text-slate-700 mb-4 leading-relaxed mt-4">The Unix Philosophy heavily influences modern
+                        System Administration. Explain the concept of "Everything is a file" in Unix-like systems. Give
+                        two practical examples of how a system administrator can leverage this principle to monitor
+                        hardware or manipulate system processes using standard command-line tools.</p>
+
+                    <textarea
+                        class="w-full h-40 p-4 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition shadow-inner bg-slate-50"
+                        placeholder="Type your practice answer here..."></textarea>
+
+                    <div class="mt-4 flex justify-end">
+                        <button
+                            class="show-answer-btn px-6 py-2 bg-slate-800 text-white font-medium rounded hover:bg-slate-700 transition flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            Show Model Answer
+                        </button>
+                    </div>
+                </div>
+                <!-- Hidden Answer -->
+                <div class="answer-reveal bg-green-50 px-6 border-t border-green-200">
+                    <h4 class="font-bold text-green-900 mb-2 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="text-green-600">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        Tutor's Breakdown
+                    </h4>
+                    <div class="text-green-800 prose prose-green max-w-none text-sm md:text-base">
+                        <p><strong>"Everything is a file" Concept:</strong> In Unix-like operating systems, the file
+                            system is the universal interface. Not only are text documents and directories treated as
+                            files, but so are hardware devices (hard drives, keyboards, printers), network connections
+                            (sockets), and even running processes. They are exposed to the user space through the
+                            Virtual File System (VFS) as nodes in the directory tree.</p>
+                        <p><strong>Practical Examples:</strong> Because they are treated as files, administrators can
+                            use standard, simple text-processing tools (like <code>cat</code>, <code>echo</code>,
+                            <code>grep</code>) to interact with them, rather than needing specialized APIs.</p>
+                        <ul class="list-disc pl-5 space-y-2 mt-2">
+                            <li><strong>Hardware Monitoring via <code>/dev</code> or <code>/sys</code>:</strong> An
+                                administrator can read from hardware devices directly. For example, reading the contents
+                                of <code>/proc/cpuinfo</code> or <code>/proc/meminfo</code> using the <code>cat</code>
+                                command outputs real-time hardware specifications and memory usage in plain text.
+                                Sending output to a disk can be done directly by piping data into <code>/dev/sda</code>.
+                            </li>
+                            <li><strong>Process Manipulation via <code>/proc</code>:</strong> The <code>/proc</code>
+                                directory contains pseudo-files representing currently running processes (identified by
+                                their PID). An administrator can view the command line arguments used to start a
+                                specific process by reading <code>/proc/[PID]/cmdline</code>. They can also dynamically
+                                alter kernel parameters by echoing values into specific files, like
+                                <code>echo 1 > /proc/sys/net/ipv4/ip_forward</code> to enable IP forwarding instantly.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Written Question 7 -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden relative">
+                <div class="absolute top-6 right-6">
+                    <a href="#concept-sa-principles"
+                        class="text-sm font-medium text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-3 py-1 rounded-full flex items-center gap-1 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                        Review SA Principles
+                    </a>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-slate-800 mb-2 border-b pb-2 pr-32">Question 7: System
+                        Administration Principles (Scalability & Automation) (20 Marks)</h3>
+                    <p class="text-slate-700 mb-4 leading-relaxed mt-4">According to the "Principles of System
+                        Administration" documentation, Scalability, Security, and Simplicity form the three pillars of
+                        exceptional system design. Define "Scalability" in this context. Discuss why automation is a
+                        mandatory component of scalability, providing an example of a task that must be automated as a
+                        network grows from 10 servers to 1,000 servers.</p>
+
+                    <textarea
+                        class="w-full h-40 p-4 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition shadow-inner bg-slate-50"
+                        placeholder="Type your practice answer here..."></textarea>
+
+                    <div class="mt-4 flex justify-end">
+                        <button
+                            class="show-answer-btn px-6 py-2 bg-slate-800 text-white font-medium rounded hover:bg-slate-700 transition flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            Show Model Answer
+                        </button>
+                    </div>
+                </div>
+                <!-- Hidden Answer -->
+                <div class="answer-reveal bg-green-50 px-6 border-t border-green-200">
+                    <h4 class="font-bold text-green-900 mb-2 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="text-green-600">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        Tutor's Breakdown
+                    </h4>
+                    <div class="text-green-800 prose prose-green max-w-none text-sm md:text-base">
+                        <p><strong>Definition of Scalability:</strong> In system administration, scalability refers to a
+                            system's (or a team's) ability to handle a growing amount of work gracefully, or its
+                            potential to be enlarged to accommodate that growth. It means the system's performance or
+                            the administrative overhead does not degrade disproportionately as demand (users, traffic,
+                            or number of machines) increases.</p>
+                        <p><strong>Why Automation is Mandatory for Scalability:</strong></p>
+                        <ul class="list-disc pl-5 space-y-2 mt-2">
+                            <li>Human effort does not scale linearly. A System Administrator might easily manage 10
+                                servers manually, but managing 1,000 servers manually would require an impossible
+                                100-fold increase in working hours.</li>
+                            <li>Manual processes are prone to human error, inconsistency ("configuration drift"), and
+                                fatigue. Automation ensures identical, predictable execution across any number of nodes.
+                            </li>
+                            <li>Without automation, SAs spend all their time on "break-fix" reactive work rather than
+                                proactive design and engineering.</li>
+                        </ul>
+                        <p class="mt-4"><strong>Example Task:</strong> <em>Software Patching and Updates.</em></p>
+                        <ul class="list-disc pl-5 space-y-2 mt-2">
+                            <li><strong>At 10 servers:</strong> An SA can SSH into each server individually, run
+                                `apt-get update && apt-get upgrade`, and manually verify the service restarted
+                                successfully. This might take an hour.</li>
+                            <li><strong>At 1,000 servers:</strong> Doing this manually is impossible. The task
+                                <em>must</em> be automated using configuration management tools (like Ansible, Puppet,
+                                or Chef) or bash scripting. The automated tool can push the updates in parallel, reboot
+                                systems in a staggered fashion to maintain uptime, and generate a centralized report of
+                                successes and failures.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
     </div>
 
     <script>
@@ -247,6 +1020,40 @@
             });
         });
 
+        // Tab Switching Logic
+        const tabMcq = document.getElementById('tab-mcq');
+        const tabWritten = document.getElementById('tab-written');
+        const sectionMcq = document.getElementById('section-mcq');
+        const sectionWritten = document.getElementById('section-written');
+
+        tabMcq.addEventListener('click', () => {
+            tabMcq.className = "px-6 py-3 font-semibold text-blue-600 border-b-2 border-blue-600 hover:bg-slate-100 transition";
+            tabWritten.className = "px-6 py-3 font-semibold text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition";
+            sectionMcq.classList.remove('hidden');
+            sectionWritten.classList.add('hidden');
+        });
+
+        tabWritten.addEventListener('click', () => {
+            tabWritten.className = "px-6 py-3 font-semibold text-blue-600 border-b-2 border-blue-600 hover:bg-slate-100 transition";
+            tabMcq.className = "px-6 py-3 font-semibold text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition";
+            sectionWritten.classList.remove('hidden');
+            sectionMcq.classList.add('hidden');
+        });
+
+        // Show Answer Logic for Written Section
+        document.querySelectorAll('.show-answer-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const answerDiv = this.parentElement.nextElementSibling;
+                if (answerDiv.classList.contains('show')) {
+                    answerDiv.classList.remove('show');
+                    this.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg> Show Model Answer`;
+                } else {
+                    answerDiv.classList.add('show');
+                    this.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 3 18 18"></path><path d="M10.584 10.587a2 2 0 0 0 2.828 2.83"></path><path d="M9.363 5.365A9.466 9.466 0 0 1 12 5c7 0 10 7 10 7a11.663 11.663 0 0 1-1.671 2.451m-1.2 2.766A9.613 9.613 0 0 1 12 19c-7 0-10-7-10-7a11.673 11.673 0 0 1 5.01-5.021"></path></svg> Hide Answer`;
+                }
+            });
+        });
+
         // Reset Quiz
         document.getElementById('reset-btn').addEventListener('click', () => {
             answers = {};
@@ -257,6 +1064,14 @@
 
             // Re-render UI
             renderQuiz();
+
+            // Clear textareas and hide answers in written section
+            document.querySelectorAll('textarea').forEach(ta => ta.value = '');
+            document.querySelectorAll('.answer-reveal').forEach(ar => ar.classList.remove('show'));
+            document.querySelectorAll('.show-answer-btn').forEach(btn => {
+                btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg> Show Model Answer`;
+            });
+
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
