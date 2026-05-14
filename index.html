@@ -792,6 +792,34 @@
         </div>
     </div>
 
+    <!-- Results Modal -->
+    <div id="results-modal" class="fixed inset-0 bg-slate-900 bg-opacity-50 z-50 hidden flex items-center justify-center backdrop-blur-sm transition-opacity opacity-0 duration-300">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 transform scale-95 transition-transform duration-300 relative">
+            <div class="text-center">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-600"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>
+                </div>
+                <h3 class="text-2xl font-extrabold text-slate-900 mb-2">Quiz Completed!</h3>
+                <p class="text-slate-500 mb-6">Here is how you did on the fundamentals.</p>
+                
+                <div class="bg-slate-50 rounded-xl p-6 mb-8 border border-slate-100">
+                    <div class="text-5xl font-black text-blue-600 mb-2"><span id="modal-score">0</span><span class="text-2xl text-slate-400">/<span id="modal-total">41</span></span></div>
+                    <p class="text-sm font-medium text-slate-500 uppercase tracking-wider" id="modal-message">Great Job!</p>
+                </div>
+
+                <div class="space-y-3">
+                    <button id="modal-share-btn" class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-xl hover:bg-blue-700 transition flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        Share Results to Rodney
+                    </button>
+                    <button id="modal-try-again-btn" class="w-full bg-slate-100 text-slate-700 font-bold py-3 px-4 rounded-xl hover:bg-slate-200 transition">
+                        Try Again
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="app.js"></script>
 </body>
 

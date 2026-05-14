@@ -65,13 +65,16 @@ const quizData = [
 let answers = {};
 let score = 0;
 let totalAnswered = 0;
+let totalQuestions = 0;
 
 // === Render MCQ Quiz ===
 function renderQuiz() {
     const container = document.getElementById('quiz-container');
     container.innerHTML = '';
     let num = 1;
+    totalQuestions = 0;
     quizData.forEach(section => {
+        totalQuestions += section.questions.length;
         const sDiv = document.createElement('div');
         const h3 = document.createElement('h3');
         h3.className = "text-xl font-bold text-slate-800 border-b-2 border-blue-500 inline-block pb-1 mb-6";
@@ -133,6 +136,72 @@ document.getElementById('quiz-container').addEventListener('click', function(e) 
         else if (!isSel && isCor) { b.className += "bg-green-50 border-green-500 text-green-900"; icon.innerHTML = checkIcon; }
         else { b.className += "bg-slate-50 border-slate-100 text-slate-400 opacity-50"; }
     });
+    
+    checkQuizCompletion();
+});
+
+function checkQuizCompletion() {
+    if (totalAnswered === totalQuestions && totalQuestions > 0) {
+        setTimeout(showResultsModal, 500); // slight delay for visual feedback on last question
+    }
+}
+
+function showResultsModal() {
+    const modal = document.getElementById('results-modal');
+    if (!modal) return;
+    
+    document.getElementById('modal-score').textContent = score;
+    document.getElementById('modal-total').textContent = totalQuestions;
+    
+    let pct = score / totalQuestions;
+    let msg = "Keep Practicing!";
+    if (pct >= 0.9) msg = "Outstanding! SysAdmin Master.";
+    else if (pct >= 0.7) msg = "Great Job!";
+    
+    document.getElementById('modal-message').textContent = msg;
+    
+    modal.classList.remove('hidden');
+    // Trigger animation
+    setTimeout(() => {
+        modal.classList.remove('opacity-0');
+        modal.querySelector('.transform').classList.remove('scale-95');
+        modal.querySelector('.transform').classList.add('scale-100');
+    }, 10);
+}
+
+function hideResultsModal() {
+    const modal = document.getElementById('results-modal');
+    if (!modal) return;
+    modal.classList.add('opacity-0');
+    modal.querySelector('.transform').classList.remove('scale-100');
+    modal.querySelector('.transform').classList.add('scale-95');
+    setTimeout(() => {
+        modal.classList.add('hidden');
+    }, 300);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const modalShareBtn = document.getElementById('modal-share-btn');
+    if (modalShareBtn) {
+        modalShareBtn.addEventListener('click', () => {
+            const shareText = `I just scored ${score}/${totalQuestions} on the SysAdmin Practice Quiz! Can you beat my score?`;
+            navigator.clipboard.writeText(shareText).then(() => {
+                const originalText = modalShareBtn.innerHTML;
+                modalShareBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><polyline points="20 6 9 17 4 12"></polyline></svg> Copied to Clipboard!`;
+                setTimeout(() => {
+                    modalShareBtn.innerHTML = originalText;
+                }, 2000);
+            });
+        });
+    }
+
+    const modalTryAgainBtn = document.getElementById('modal-try-again-btn');
+    if (modalTryAgainBtn) {
+        modalTryAgainBtn.addEventListener('click', () => {
+            hideResultsModal();
+            document.getElementById('reset-btn').click();
+        });
+    }
 });
 
 // === Tab Switching ===
