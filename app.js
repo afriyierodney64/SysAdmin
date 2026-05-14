@@ -217,6 +217,12 @@ function showResultsModal() {
     
     document.getElementById('modal-message').textContent = msg;
     
+    const waLink = document.getElementById('whatsapp-link');
+    if(waLink) {
+        const text = encodeURIComponent(`Hey Rodney! I just scored ${score}/${totalQuestions} on the SysAdmin Practice Quiz!`);
+        waLink.href = `https://wa.me/233534882761?text=${text}`;
+    }
+    
     modal.classList.remove('hidden');
     // Trigger animation
     setTimeout(() => {
