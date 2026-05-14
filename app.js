@@ -63,6 +63,7 @@ const quizData = [
 
 // === State ===
 let answers = {};
+let pendingAnswers = {};
 let score = 0;
 let totalAnswered = 0;
 let totalQuestions = 0;
@@ -102,6 +103,16 @@ function renderQuiz() {
                 opts.appendChild(btn);
             });
             qDiv.appendChild(opts);
+
+            const confirmWrap = document.createElement('div');
+            confirmWrap.className = "mt-6 hidden confirm-wrap";
+            const confirmBtn = document.createElement('button');
+            confirmBtn.className = "confirm-btn w-full py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 transition flex items-center justify-center gap-2 shadow-md";
+            confirmBtn.dataset.qid = q.id;
+            confirmBtn.innerHTML = `Confirm Answer <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5l10 -10"></path></svg>`;
+            confirmWrap.appendChild(confirmBtn);
+            qDiv.appendChild(confirmWrap);
+
             wrap.appendChild(qDiv);
             num++;
         });
@@ -111,34 +122,80 @@ function renderQuiz() {
 }
 
 // === MCQ Click Handler ===
-document.getElementById('quiz-container').addEventListener('click', function(e) {
-    const btn = e.target.closest('.option-btn');
-    if (!btn || btn.disabled) return;
-    const qId = btn.dataset.qid;
-    const selected = btn.dataset.option;
-    const correct = btn.dataset.correctOption;
-    if (answers[qId]) return;
-    answers[qId] = selected;
+document.getElementById('quiz-container').addEventListener('click', function (e) {
+    const optBtn = e.target.closest('.option-btn');
+    const confBtn = e.target.closest('.confirm-btn');
+
+    if (optBtn && !optBtn.disabled) {
+        const qId = optBtn.dataset.qid;
+        if (answers[qId]) return; 
+
+        const toggleEl = document.getElementById('confirm-toggle');
+        const isConfirmMode = toggleEl ? toggleEl.checked : true;
+        const block = optBtn.closest('.question-block');
+
+        if (isConfirmMode) {
+            block.querySelectorAll('.option-btn').forEach(b => {
+                b.className = "option-btn w-full text-left p-4 rounded-lg border-2 flex items-center justify-between transition-all duration-200 border-slate-100 bg-slate-50 hover:bg-blue-50 hover:border-blue-200 cursor-pointer";
+                b.querySelector('.icon-slot').innerHTML = ''; 
+            });
+            optBtn.className = "option-btn w-full text-left p-4 rounded-lg border-2 flex items-center justify-between transition-all duration-200 border-blue-500 bg-blue-50 cursor-pointer ring-2 ring-blue-200 shadow-sm";
+            optBtn.querySelector('.icon-slot').innerHTML = `<div class="w-3 h-3 bg-blue-600 rounded-full"></div>`;
+            pendingAnswers[qId] = optBtn.dataset.option;
+            block.querySelector('.confirm-wrap').classList.remove('hidden');
+        } else {
+            finalizeAnswer(qId, optBtn.dataset.option, optBtn.dataset.correctOption, block);
+        }
+    } else if (confBtn) {
+        const qId = confBtn.dataset.qid;
+        if (answers[qId]) return;
+        const selected = pendingAnswers[qId];
+        if (!selected) return;
+        const block = confBtn.closest('.question-block');
+        const correctOpt = block.querySelector('.option-btn').dataset.correctOption;
+        
+        finalizeAnswer(qId, selected, correctOpt, block);
+        confBtn.parentElement.classList.add('hidden');
+    }
+});
+
+function finalizeAnswer(qId, selectedOption, correctOption, questionBlock) {
+    answers[qId] = selectedOption;
     totalAnswered++;
-    if (selected === correct) score++;
+    if (selectedOption === correctOption) {
+        score++;
+    }
+
     document.getElementById('score-display').textContent = score;
     document.getElementById('answered-display').textContent = totalAnswered;
-    const block = btn.closest('.question-block');
-    block.querySelectorAll('.option-btn').forEach(b => {
+
+    const allBtns = questionBlock.querySelectorAll('.option-btn');
+    allBtns.forEach(b => {
         b.disabled = true;
         const opt = b.dataset.option;
-        const isSel = opt === selected;
-        const isCor = opt === correct;
-        const icon = b.querySelector('.icon-slot');
+        const isSelected = (opt === selectedOption);
+        const isCorrect = (opt === correctOption);
+        const iconSlot = b.querySelector('.icon-slot');
+
         b.className = "option-btn w-full text-left p-4 rounded-lg border-2 flex items-center justify-between transition-all duration-200 cursor-default ";
-        if (isSel && isCor) { b.className += "bg-green-50 border-green-500 text-green-900"; icon.innerHTML = checkIcon; }
-        else if (isSel && !isCor) { b.className += "bg-red-50 border-red-500 text-red-900"; icon.innerHTML = xIcon; }
-        else if (!isSel && isCor) { b.className += "bg-green-50 border-green-500 text-green-900"; icon.innerHTML = checkIcon; }
-        else { b.className += "bg-slate-50 border-slate-100 text-slate-400 opacity-50"; }
+
+        if (isSelected && isCorrect) {
+            b.className += "bg-green-50 border-green-500 text-green-900";
+            iconSlot.innerHTML = checkIcon;
+        } else if (isSelected && !isCorrect) {
+            b.className += "bg-red-50 border-red-500 text-red-900";
+            iconSlot.innerHTML = xIcon;
+        } else if (!isSelected && isCorrect) {
+            b.className += "bg-green-50 border-green-500 text-green-900";
+            iconSlot.innerHTML = checkIcon;
+        } else {
+            b.className += "bg-slate-50 border-slate-100 text-slate-400 opacity-50";
+            iconSlot.innerHTML = '';
+        }
     });
-    
+
     checkQuizCompletion();
-});
+}
 
 function checkQuizCompletion() {
     if (totalAnswered === totalQuestions && totalQuestions > 0) {
@@ -181,6 +238,21 @@ function hideResultsModal() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    const confirmToggle = document.getElementById('confirm-toggle');
+    if(confirmToggle) {
+        const toggleBg = document.querySelector('.toggle-bg');
+        const toggleDot = document.querySelector('.dot');
+        confirmToggle.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                toggleBg.classList.replace('bg-slate-300', 'bg-blue-600');
+                toggleDot.classList.replace('translate-x-0', 'translate-x-5');
+            } else {
+                toggleBg.classList.replace('bg-blue-600', 'bg-slate-300');
+                toggleDot.classList.replace('translate-x-5', 'translate-x-0');
+            }
+        });
+    }
+
     const modalDownloadBtn = document.getElementById('modal-download-btn');
     if (modalDownloadBtn) {
         modalDownloadBtn.addEventListener('click', () => {
@@ -331,6 +403,7 @@ function setupWrittenSection() {
 // === Reset ===
 document.getElementById('reset-btn').addEventListener('click', () => {
     answers = {};
+    pendingAnswers = {};
     score = 0;
     totalAnswered = 0;
     document.getElementById('score-display').textContent = score;

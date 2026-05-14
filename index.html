@@ -210,6 +210,19 @@
 
         <!-- MCQ Section -->
         <div id="section-mcq">
+            <!-- Settings Toggle -->
+            <div class="flex items-center justify-end mb-6 bg-white p-3 rounded-xl border border-slate-200 shadow-sm inline-flex float-right">
+                <label class="flex items-center cursor-pointer">
+                    <div class="mr-3 text-sm font-semibold text-slate-700">Confirm each answer</div>
+                    <div class="relative">
+                        <input type="checkbox" id="confirm-toggle" class="sr-only" checked>
+                        <div class="w-11 h-6 bg-blue-600 rounded-full shadow-inner transition-colors duration-300 toggle-bg"></div>
+                        <div class="dot absolute w-4 h-4 bg-white rounded-full shadow left-1 top-1 transition-transform duration-300 transform translate-x-5"></div>
+                    </div>
+                </label>
+            </div>
+            <div class="clear-both"></div>
+            
             <!-- Quiz Container where JS will inject questions -->
             <div id="quiz-container" class="space-y-12"></div>
         </div>
