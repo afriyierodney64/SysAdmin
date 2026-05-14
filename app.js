@@ -268,11 +268,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const modalContent = document.querySelector('#results-modal > div');
             
             // Temporarily hide buttons for screenshot
-            const buttonsDiv = modalContent.querySelector('.space-y-3');
-            buttonsDiv.style.display = 'none';
+            const buttonsDiv = modalContent.querySelector('.space-y-4') || modalContent.querySelector('.space-y-3');
+            if(buttonsDiv) buttonsDiv.style.display = 'none';
             
             html2canvas(modalContent, { backgroundColor: '#ffffff', scale: 2, useCORS: true }).then(canvas => {
-                buttonsDiv.style.display = 'block';
+                if(buttonsDiv) buttonsDiv.style.display = 'block';
                 
                 const image = canvas.toDataURL("image/png");
                 const link = document.createElement('a');
@@ -285,7 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     modalDownloadBtn.innerHTML = originalText;
                 }, 2000);
             }).catch(err => {
-                buttonsDiv.style.display = 'block';
+                if(buttonsDiv) buttonsDiv.style.display = 'block';
                 modalDownloadBtn.innerHTML = originalText;
                 console.error("Screenshot failed", err);
             });
