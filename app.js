@@ -157,7 +157,7 @@ tabWritten.addEventListener('click', () => {
 // === Show/Hide Model Answer (FIXED) ===
 document.querySelectorAll('.show-answer-btn').forEach(btn => {
     btn.addEventListener('click', function() {
-        const answerDiv = this.closest('.written-card').querySelector('.answer-reveal');
+        const answerDiv = this.closest('.written-card') ? this.closest('.written-card').querySelector('.answer-reveal') : this.closest('.p-6').nextElementSibling;
         if (!answerDiv) return;
         if (answerDiv.classList.contains('show')) {
             answerDiv.classList.remove('show');
@@ -168,6 +168,77 @@ document.querySelectorAll('.show-answer-btn').forEach(btn => {
         }
     });
 });
+
+// === DOM Restructuring & TikTok Style Back Button ===
+function setupWrittenSection() {
+    const writtenSection = document.getElementById('section-written');
+    const appendix = document.querySelector('.bg-white.rounded-xl.shadow-sm.border.border-slate-200.p-6.mb-10');
+    
+    // 1. Move appendix to bottom of written section
+    if (appendix && writtenSection) {
+        appendix.id = "concepts-appendix";
+        writtenSection.appendChild(appendix);
+    }
+
+    // 2. Add 'written-card' class to all question cards, move review links
+    const cards = writtenSection.querySelectorAll('.bg-white.rounded-xl.overflow-hidden.relative');
+    cards.forEach((card, i) => {
+        card.classList.add('written-card');
+        card.classList.remove('relative');
+        card.id = 'written-q' + (i + 1);
+        
+        // Move review link
+        const linkDiv = card.querySelector('.absolute');
+        const p = card.querySelector('.p-6 p');
+        const h3 = card.querySelector('.p-6 h3');
+        if(h3) h3.classList.remove('pr-32');
+
+        if (linkDiv && p) {
+            const a = linkDiv.querySelector('a');
+            a.className = "review-concept-link inline-flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-full transition mt-1 mb-4";
+            a.dataset.sourceId = card.id;
+            p.after(a);
+            linkDiv.remove();
+        }
+    });
+
+    // 3. Create TikTok style floating back button
+    let floatBtn = document.createElement('button');
+    floatBtn.id = 'floating-back-btn';
+    floatBtn.className = "fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-slate-900 text-white px-6 py-3 rounded-full shadow-2xl font-medium flex items-center gap-2 transition-all duration-300 translate-y-24 opacity-0 z-50 pointer-events-none";
+    floatBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg> <span id="float-btn-text">Back to Question</span>`;
+    document.body.appendChild(floatBtn);
+
+    let activeSourceId = null;
+
+    // Attach click to review links to show the floating button
+    document.querySelectorAll('.review-concept-link').forEach(link => {
+        link.addEventListener('click', function() {
+            activeSourceId = this.dataset.sourceId;
+            const qNum = activeSourceId.replace('written-q', '');
+            document.getElementById('float-btn-text').textContent = "Back to Question " + qNum;
+            
+            // Show button
+            floatBtn.classList.remove('translate-y-24', 'opacity-0', 'pointer-events-none');
+            
+            // Highlight target
+            const targetId = this.getAttribute('href').substring(1);
+            setTimeout(() => {
+                const targetEl = document.getElementById(targetId);
+                if(targetEl) targetEl.classList.add('highlight-target');
+            }, 100);
+        });
+    });
+
+    // Floating button click
+    floatBtn.addEventListener('click', () => {
+        if (activeSourceId) {
+            document.getElementById(activeSourceId).scrollIntoView({behavior: 'smooth'});
+            // Hide button
+            floatBtn.classList.add('translate-y-24', 'opacity-0', 'pointer-events-none');
+        }
+    });
+}
 
 // === Reset ===
 document.getElementById('reset-btn').addEventListener('click', () => {
@@ -185,3 +256,4 @@ document.getElementById('reset-btn').addEventListener('click', () => {
 
 // === Init ===
 renderQuiz();
+setupWrittenSection();
