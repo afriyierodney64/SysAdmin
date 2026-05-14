@@ -181,16 +181,35 @@ function hideResultsModal() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const modalShareBtn = document.getElementById('modal-share-btn');
-    if (modalShareBtn) {
-        modalShareBtn.addEventListener('click', () => {
-            const shareText = `I just scored ${score}/${totalQuestions} on the SysAdmin Practice Quiz! Can you beat my score?`;
-            navigator.clipboard.writeText(shareText).then(() => {
-                const originalText = modalShareBtn.innerHTML;
-                modalShareBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><polyline points="20 6 9 17 4 12"></polyline></svg> Copied to Clipboard!`;
+    const modalDownloadBtn = document.getElementById('modal-download-btn');
+    if (modalDownloadBtn) {
+        modalDownloadBtn.addEventListener('click', () => {
+            const originalText = modalDownloadBtn.innerHTML;
+            modalDownloadBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg> Generating...`;
+            
+            const modalContent = document.querySelector('#results-modal > div');
+            
+            // Temporarily hide buttons for screenshot
+            const buttonsDiv = modalContent.querySelector('.space-y-3');
+            buttonsDiv.style.display = 'none';
+            
+            html2canvas(modalContent, { backgroundColor: '#ffffff', scale: 2, useCORS: true }).then(canvas => {
+                buttonsDiv.style.display = 'block';
+                
+                const image = canvas.toDataURL("image/png");
+                const link = document.createElement('a');
+                link.href = image;
+                link.download = 'SysAdmin_Quiz_Results.png';
+                link.click();
+                
+                modalDownloadBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><polyline points="20 6 9 17 4 12"></polyline></svg> Downloaded!`;
                 setTimeout(() => {
-                    modalShareBtn.innerHTML = originalText;
+                    modalDownloadBtn.innerHTML = originalText;
                 }, 2000);
+            }).catch(err => {
+                buttonsDiv.style.display = 'block';
+                modalDownloadBtn.innerHTML = originalText;
+                console.error("Screenshot failed", err);
             });
         });
     }
