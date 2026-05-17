@@ -88,8 +88,12 @@ function renderQuiz() {
             qDiv.className = "question-block bg-white rounded-xl p-6 shadow-sm border border-slate-200";
             qDiv.dataset.qid = q.id;
             const p = document.createElement('p');
-            p.className = "font-bold text-slate-800 mb-4 text-lg flex gap-2";
-            p.innerHTML = `<span class="text-blue-600">${num}.</span> <span>${q.q}</span>`;
+            p.className = "text-slate-800 mb-4 text-lg flex gap-2";
+            
+            // Format bullet lists to make the bullet titles bold if there are any
+            const formattedQ = q.q.replace(/^([IVX]+\.\s[^:\n]+:)/gm, '<strong>$1</strong>');
+            
+            p.innerHTML = `<span class="text-blue-600 font-bold">${num}.</span> <span>${formattedQ}</span>`;
             qDiv.appendChild(p);
             const opts = document.createElement('div');
             opts.className = "space-y-3";

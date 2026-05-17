@@ -135,8 +135,12 @@ function renderQuiz(data, containerId) {
             qDiv.dataset.qid = q.id;
             
             const p = document.createElement('p');
-            p.className = "font-bold text-slate-800 mb-4 text-lg flex gap-2 whitespace-pre-wrap";
-            p.innerHTML = `<span class="text-emerald-600">${num}.</span> <span>${q.q}</span>`;
+            p.className = "text-slate-800 mb-4 text-lg flex gap-2 whitespace-pre-wrap";
+            
+            // Format bullet lists to make the bullet titles bold
+            const formattedQ = q.q.replace(/^([IVX]+\.\s[^:\n]+:)/gm, '<strong>$1</strong>');
+            
+            p.innerHTML = `<span class="text-emerald-600 font-bold">${num}.</span> <span>${formattedQ}</span>`;
             qDiv.appendChild(p);
             
             const opts = document.createElement('div');
