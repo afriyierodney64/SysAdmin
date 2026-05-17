@@ -231,8 +231,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         card.innerHTML = `
             <div class="p-6">
-                <h3 class="text-xl font-bold text-slate-800 mb-2 border-b pb-2">\${q.title}</h3>
-                <p class="text-slate-700 mb-4 leading-relaxed mt-4 whitespace-pre-wrap">\${q.question}</p>
+                <h3 class="text-xl font-bold text-slate-800 mb-2 border-b pb-2">${q.title}</h3>
+                <p class="text-slate-700 mb-4 leading-relaxed mt-4 whitespace-pre-wrap">${q.question}</p>
 
                 <textarea class="w-full h-40 p-4 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition shadow-inner bg-slate-50" placeholder="Type your practice answer here..."></textarea>
 
@@ -259,7 +259,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             </div>
         `;
-        
+
         container.appendChild(card);
     });
 
@@ -269,7 +269,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!btn) return;
 
         const answerDiv = btn.closest('.written-card').querySelector('.answer-reveal');
-        
+
         if (answerDiv.classList.contains('show')) {
             answerDiv.classList.remove('show');
             btn.innerHTML = `< svg xmlns = "http://www.w3.org/2000/svg" width = "18" height = "18" viewBox = "0 0 24 24" fill = "none" stroke = "currentColor" stroke - width="2" stroke - linecap="round" stroke - linejoin="round" ><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg > Show Model Answer`;
