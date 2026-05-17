@@ -13,8 +13,19 @@
         .answer-reveal.show { max-height: 1000px; padding-top: 1rem; padding-bottom: 1rem; }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --base-font-size: 14px; }
+        html { font-size: var(--base-font-size); }
+    </style>
 </head>
-<body class="bg-slate-50 min-h-screen text-slate-800">
+<body class="bg-slate-50 min-h-screen text-slate-800 text-sm">
+    <!-- Font Size Controls -->
+    <div class="bg-slate-800 text-white py-2 px-4 flex justify-center items-center gap-4 text-xs">
+        <span>Adjust Font Size:</span>
+        <span class="text-xs">A</span>
+        <input type="range" id="font-size-slider" min="10" max="24" value="14" class="w-32 accent-emerald-500 cursor-pointer">
+        <span class="text-base font-bold">A</span>
+    </div>
 
     <!-- Header Bar -->
     <div id="header-bar" class="bg-white shadow-sm sticky top-0 z-10 hidden">
@@ -59,20 +70,28 @@
             <p class="text-slate-600">Select a batch of questions to begin.</p>
         </div>
 
-        <div class="grid md:grid-cols-2 gap-6">
+        <div class="grid md:grid-cols-3 gap-6">
             <button id="btn-itpm-test1" class="text-left group bg-white rounded-xl p-6 shadow-sm hover:shadow-md border border-slate-200 transition-all block w-full relative overflow-hidden">
                 <div class="absolute left-0 top-0 h-full w-1 bg-emerald-500 transform scale-y-0 group-hover:scale-y-100 transition-transform origin-bottom"></div>
-                <h3 class="text-xl font-bold text-slate-800 mb-2 group-hover:text-emerald-600 transition">Test 1</h3>
+                <h3 class="text-xl font-bold text-slate-800 mb-2 group-hover:text-emerald-600 transition">Obj 1</h3>
                 <p class="text-slate-500 mb-4">Questions 1 - 24</p>
                 <div class="text-sm font-semibold text-emerald-600 bg-emerald-50 inline-block px-3 py-1 rounded-full">Start Test &rarr;</div>
             </button>
             
             <button id="btn-itpm-test2" class="text-left group bg-white rounded-xl p-6 shadow-sm hover:shadow-md border border-slate-200 transition-all block w-full relative overflow-hidden">
                 <div class="absolute left-0 top-0 h-full w-1 bg-emerald-500 transform scale-y-0 group-hover:scale-y-100 transition-transform origin-bottom"></div>
-                <h3 class="text-xl font-bold text-slate-800 mb-2 group-hover:text-emerald-600 transition">Test 2</h3>
+                <h3 class="text-xl font-bold text-slate-800 mb-2 group-hover:text-emerald-600 transition">Obj 2</h3>
                 <p class="text-slate-500 mb-4">Questions 1 - 23</p>
                 <div class="text-sm font-semibold text-emerald-600 bg-emerald-50 inline-block px-3 py-1 rounded-full">Start Test &rarr;</div>
             </button>
+
+            <!-- Essay Link -->
+            <a href="essay.html" class="text-left group bg-white rounded-xl p-6 shadow-sm hover:shadow-md border border-slate-200 transition-all block w-full relative overflow-hidden">
+                <div class="absolute left-0 top-0 h-full w-1 bg-emerald-500 transform scale-y-0 group-hover:scale-y-100 transition-transform origin-bottom"></div>
+                <h3 class="text-xl font-bold text-slate-800 mb-2 group-hover:text-emerald-600 transition">Essay</h3>
+                <p class="text-slate-500 mb-4">Written Questions</p>
+                <div class="text-sm font-semibold text-emerald-600 bg-emerald-50 inline-block px-3 py-1 rounded-full">Start Essay &rarr;</div>
+            </a>
         </div>
     </div>
 

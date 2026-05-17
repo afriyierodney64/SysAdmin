@@ -374,3 +374,15 @@ document.getElementById('reset-btn').addEventListener('click', () => {
     
     window.scrollTo({ top: 0, behavior: 'smooth' });
 });
+
+
+// === Font Size Slider ===
+document.addEventListener("DOMContentLoaded", () => {
+    const slider = document.getElementById("font-size-slider");
+    if (slider) {
+        slider.addEventListener("input", (e) => {
+            document.documentElement.style.setProperty("--base-font-size", e.target.value + "px");
+        });
+    }
+});
+

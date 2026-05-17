@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT Project Management Essay Prep</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root { --base-font-size: 14px; }
+        html { font-size: var(--base-font-size); }
+        body { font-family: 'Inter', sans-serif; }
+        .answer-reveal { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out, padding 0.4s ease-out; }
+        .answer-reveal.show { max-height: 1500px; padding-top: 1rem; padding-bottom: 1rem; }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="bg-slate-50 min-h-screen text-slate-800 text-sm pb-24">
+
+    <!-- Font Size Controls -->
+    <div class="bg-slate-800 text-white py-2 px-4 flex justify-center items-center gap-4 text-xs">
+        <span>Adjust Font Size:</span>
+        <span class="text-xs">A</span>
+        <input type="range" id="font-size-slider" min="10" max="24" value="14" class="w-32 accent-emerald-500 cursor-pointer">
+        <span class="text-base font-bold">A</span>
+    </div>
+
+    <!-- Header Bar -->
+    <div id="header-bar" class="bg-white shadow-sm sticky top-0 z-10">
+        <div class="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <a href="itpm.html" class="p-2 hover:bg-slate-100 rounded-full transition-colors" title="Back to IT PM">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-600"><path d="m15 18-6-6 6-6"/></svg>
+                </a>
+                <div class="bg-emerald-100 p-2 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-600">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                </div>
+                <h1 class="font-bold text-lg hidden sm:block text-emerald-800">IT PM Essay Prep</h1>
+            </div>
+        </div>
+    </div>
+
+    <!-- Essay Content -->
+    <div class="max-w-4xl mx-auto p-4 md:p-8 mt-6">
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-slate-900 mb-2">Written Questions (Essay)</h2>
+            <p class="text-slate-600">Type your answer in the box, then check your understanding against the model answer.</p>
+        </div>
+
+        <div id="essay-container" class="space-y-12">
+            <!-- Questions will be injected by JavaScript -->
+        </div>
+    </div>
+
+    <script src="essay.js"></script>
+</body>
+</html>
