@@ -223,16 +223,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const container = document.getElementById('essay-container');
-    if(!container) return;
+    if (!container) return;
 
     essayQuestions.forEach((q, index) => {
         const card = document.createElement('div');
         card.className = "bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden relative written-card";
-        
+
         card.innerHTML = `
             <div class="p-6">
-                <h3 class="text-xl font-bold text-slate-800 mb-2 border-b pb-2">${q.title}</h3>
-                <p class="text-slate-700 mb-4 leading-relaxed mt-4 whitespace-pre-wrap">${q.question}</p>
+                <h3 class="text-xl font-bold text-slate-800 mb-2 border-b pb-2">\${q.title}</h3>
+                <p class="text-slate-700 mb-4 leading-relaxed mt-4 whitespace-pre-wrap">\${q.question}</p>
 
                 <textarea class="w-full h-40 p-4 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition shadow-inner bg-slate-50" placeholder="Type your practice answer here..."></textarea>
 
@@ -255,10 +255,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     Tutor's Breakdown
                 </h4>
                 <div class="text-emerald-900 prose prose-emerald max-w-none text-sm md:text-base">
-                    ${q.answerHtml}
+                    \${q.answerHtml}
                 </div>
             </div>
-        `;
+        \`;
         
         container.appendChild(card);
     });
