@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT Project Management Prep</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .option-btn.selected { border-color: #10b981; background-color: #ecfdf5; }
+        .answer-reveal { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out, padding 0.4s ease-out; }
+        .answer-reveal.show { max-height: 1000px; padding-top: 1rem; padding-bottom: 1rem; }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="bg-slate-50 min-h-screen text-slate-800">
+
+    <!-- Header Bar -->
+    <div id="header-bar" class="bg-white shadow-sm sticky top-0 z-10 hidden">
+        <div class="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <button id="btn-back-itpm-from-quiz" class="p-2 hover:bg-slate-100 rounded-full transition-colors" title="Back to Tests">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-600"><path d="m15 18-6-6 6-6"/></svg>
+                </button>
+                <div class="bg-emerald-100 p-2 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-600">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                </div>
+                <h1 class="font-bold text-lg hidden sm:block text-emerald-800">IT Project Management</h1>
+            </div>
+            <div id="header-controls" class="flex items-center gap-4">
+                <div class="text-sm font-medium bg-slate-100 px-3 py-1 rounded-full">
+                    Score: <span id="score-display">0</span> / <span id="answered-display">0</span> <span id="total-display" class="text-slate-400"></span>
+                </div>
+                <button id="reset-btn" class="flex items-center gap-2 text-sm bg-slate-800 text-white px-4 py-2 rounded-md hover:bg-slate-700 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                        <path d="M3 3v5h5"></path>
+                    </svg>
+                    <span class="hidden sm:inline">Reset</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ITPM Test Selection View -->
+    <div id="view-itpm" class="max-w-4xl mx-auto p-4 md:p-8 mt-6">
+        <div class="mb-8">
+            <a href="index.html" class="inline-flex items-center gap-2 text-slate-500 hover:text-slate-800 font-medium transition mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                Back to Course Selection
+            </a>
+            <h2 class="text-3xl font-bold text-slate-900 mb-2">IT Project Management</h2>
+            <p class="text-slate-600">Select a batch of questions to begin.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+            <button id="btn-itpm-test1" class="text-left group bg-white rounded-xl p-6 shadow-sm hover:shadow-md border border-slate-200 transition-all block w-full relative overflow-hidden">
+                <div class="absolute left-0 top-0 h-full w-1 bg-emerald-500 transform scale-y-0 group-hover:scale-y-100 transition-transform origin-bottom"></div>
+                <h3 class="text-xl font-bold text-slate-800 mb-2 group-hover:text-emerald-600 transition">Test 1</h3>
+                <p class="text-slate-500 mb-4">Questions 1 - 24</p>
+                <div class="text-sm font-semibold text-emerald-600 bg-emerald-50 inline-block px-3 py-1 rounded-full">Start Test &rarr;</div>
+            </button>
+            
+            <button id="btn-itpm-test2" class="text-left group bg-white rounded-xl p-6 shadow-sm hover:shadow-md border border-slate-200 transition-all block w-full relative overflow-hidden">
+                <div class="absolute left-0 top-0 h-full w-1 bg-emerald-500 transform scale-y-0 group-hover:scale-y-100 transition-transform origin-bottom"></div>
+                <h3 class="text-xl font-bold text-slate-800 mb-2 group-hover:text-emerald-600 transition">Test 2</h3>
+                <p class="text-slate-500 mb-4">Questions 1 - 23</p>
+                <div class="text-sm font-semibold text-emerald-600 bg-emerald-50 inline-block px-3 py-1 rounded-full">Start Test &rarr;</div>
+            </button>
+        </div>
+    </div>
+
+    <!-- ITPM Quiz View -->
+    <div id="view-itpm-quiz" class="max-w-4xl mx-auto p-4 md:p-8 mt-6 hidden">
+        <div class="mb-8">
+            <h2 id="itpm-quiz-title" class="text-3xl font-bold text-slate-900 mb-2">Test X</h2>
+            <p class="text-slate-600">Select the best answer for each question.</p>
+        </div>
+        
+        <div class="flex items-center justify-end mb-6 bg-white p-3 rounded-xl border border-slate-200 shadow-sm inline-flex float-right">
+            <label class="flex items-center cursor-pointer">
+                <div class="mr-3 text-sm font-semibold text-slate-700">Confirm each answer</div>
+                <div class="relative">
+                    <input type="checkbox" id="itpm-confirm-toggle" class="sr-only" checked>
+                    <div class="w-11 h-6 bg-emerald-600 rounded-full shadow-inner transition-colors duration-300 toggle-bg-itpm"></div>
+                    <div class="dot-itpm absolute w-4 h-4 bg-white rounded-full shadow left-1 top-1 transition-transform duration-300 transform translate-x-5"></div>
+                </div>
+            </label>
+        </div>
+        <div class="clear-both"></div>
+
+        <div id="itpm-quiz-container" class="space-y-12"></div>
+    </div>
+
+    <!-- Results Modal -->
+    <div id="results-modal" class="fixed inset-0 bg-slate-900 bg-opacity-50 z-50 hidden flex items-center justify-center backdrop-blur-sm transition-opacity opacity-0 duration-300">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 transform scale-95 transition-transform duration-300 relative">
+            <div class="text-center">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-100 mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-600"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                </div>
+                <h3 class="text-2xl font-extrabold text-slate-900 mb-2">Test Completed!</h3>
+                <p class="text-slate-500 mb-6">Here is how you did.</p>
+                
+                <div class="bg-slate-50 rounded-xl p-6 mb-8 border border-slate-100">
+                    <div class="text-5xl font-black text-emerald-600 mb-2"><span id="modal-score">0</span><span class="text-2xl text-slate-400">/<span id="modal-total">0</span></span></div>
+                    <p class="text-sm font-medium text-slate-500 uppercase tracking-wider" id="modal-message">Great Job!</p>
+                </div>
+
+                <div class="space-y-4">
+                    <button id="modal-download-btn" class="w-full bg-emerald-600 text-white font-bold py-3 px-4 rounded-xl hover:bg-emerald-700 transition flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        1. Download Results Image
+                    </button>
+                    
+                    <div class="pt-2 border-t border-slate-100">
+                        <p class="text-sm font-bold text-slate-700 mb-3 mt-2">Share your results with Rodney</p>
+                        <a id="whatsapp-link" href="#" target="_blank" rel="noopener noreferrer" class="w-full bg-green-500 text-white font-bold py-3 px-4 rounded-xl hover:bg-green-600 transition flex items-center justify-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                            2. Send via WhatsApp
+                        </a>
+                    </div>
+
+                    <button id="modal-try-again-btn" class="w-full bg-slate-100 text-slate-700 font-bold py-3 px-4 rounded-xl hover:bg-slate-200 transition mt-2">
+                        Try Again
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="itpm.js"></script>
+</body>
+</html>
